@@ -1,4 +1,4 @@
-FRAME° — COMPLETE FRONTEND MODERNIZATION, PREMIUM UI/UX & INTERACTION OVERHAUL
+# Frame° — COMPLETE FRONTEND MODERNIZATION, PREMIUM UI/UX & INTERACTION OVERHAUL
 
 Act as a world-class UI/UX designer, frontend architect, senior software engineer, motion designer, and design systems specialist.
 
