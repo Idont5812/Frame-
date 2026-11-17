@@ -1,0 +1,18 @@
+node_modules/
+dist/
+.env
+server/frame.db
+server/uploads/videos/*
+server/uploads/thumbnails/*
+!server/uploads/videos/.gitkeep
+!server/uploads/thumbnails/.gitkeep
+# Local runtime state
+.frame.pid
+logs/
+
+node_modules/
+.env
+.env.*
+!.env.example
+.frame.pid
+logs/

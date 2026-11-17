@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cd "$ROOT"
+PID_FILE="$ROOT/.frame.pid"
+LOG_DIR="$ROOT/logs"
+LOG_FILE="$LOG_DIR/frame.log"
+MODE="${1:-foreground}"
+
+usage() {
+  cat <<'HELP'
+Frame° launcher
+
+  ./start                 Start in foreground (Ctrl+C stops it)
+  ./start --background    Start in background; keep using this shell
+  ./start --status        Show whether Frame° is running
+  ./start --stop          Stop the background instance
+  ./start --logs          Follow the background log
+HELP
+}
+
+is_running() {
+  [[ -s "$PID_FILE" ]] || return 1
+  local pid
+  pid="$(cat "$PID_FILE" 2>/dev/null || true)"
+  [[ "$pid" =~ ^[0-9]+$ ]] || return 1
+  kill -0 "$pid" 2>/dev/null
+}
+
+case "$MODE" in
+  --help|-h) usage; exit 0 ;;
+  --status)
+    if is_running; then
+      echo "Frame° is running (launcher PID $(cat "$PID_FILE"))."
+      echo "Log: $LOG_FILE"
+    else
+      rm -f "$PID_FILE"
+      echo "Frame° is not running."
+    fi
+    exit 0
+    ;;
+  --logs)
+    mkdir -p "$LOG_DIR"
+    touch "$LOG_FILE"
+    exec tail -n 80 -f "$LOG_FILE"
+    ;;
+  --stop)
+    if ! is_running; then
+      rm -f "$PID_FILE"
+      echo "Frame° is not running."
+      exit 0
+    fi
+    pid="$(cat "$PID_FILE")"
+    echo "Stopping Frame° (PID $pid)..."
+    # The daemon is launched in its own process group; this stops the API,
+    # Vite and their supervisor together.
+    kill -TERM -- "-$pid" 2>/dev/null || kill -TERM "$pid" 2>/dev/null || true
+    for _ in {1..30}; do
+      kill -0 "$pid" 2>/dev/null || break
+      sleep 0.2
+    done
+    kill -KILL -- "-$pid" 2>/dev/null || true
+    rm -f "$PID_FILE"
+    echo "Stop signal sent."
+    exit 0
+    ;;
+  foreground|--background) ;;
+  *) usage >&2; exit 2 ;;
+esac
+
+if [[ ! -f package.json || ! -f package-lock.json ]]; then
+  echo "ERROR: package.json or package-lock.json is missing." >&2
+  exit 1
+fi
+command -v node >/dev/null 2>&1 || { echo "Node.js is missing. Install Node.js 23.6+ first." >&2; exit 1; }
+command -v npm >/dev/null 2>&1 || { echo "npm is missing." >&2; exit 1; }
+
+node --input-type=module <<'NODE'
+const [major, minor] = process.versions.node.split('.').map(Number);
+if (major < 23 || (major === 23 && minor < 6)) {
+  console.error(`Frame° requires Node.js 23.6 or newer; found ${process.versions.node}.`);
+  console.error('On Termux, update/install Node.js with: pkg update && pkg upgrade && pkg install nodejs');
+  process.exit(1);
+}
+NODE
+
+# Create .env without overwriting existing user configuration.
+if [[ ! -f .env ]]; then
+  umask 077
+  node --input-type=module <<'NODE'
+import { randomBytes } from 'node:crypto';
+import { writeFileSync } from 'node:fs';
+writeFileSync('.env', `PORT=3000\nJWT_SECRET=${randomBytes(48).toString('hex')}\nNODE_ENV=development\n`, { mode: 0o600 });
+NODE
+  echo "Created .env with a new JWT secret."
+fi
+
+# Install dependencies before importing any package from node_modules.
+# This is essential on a fresh or partially-installed Termux setup.
+if [[ ! -f node_modules/.package-lock.json || ! -f node_modules/dotenv/package.json || ! -f node_modules/vite/bin/vite.js || ! -f node_modules/better-sqlite3/build/Release/better_sqlite3.node ]]; then
+  echo "Installing locked dependencies (first run or incomplete install)..."
+  npm ci --no-audit --no-fund
+fi
+
+# Validate the configured secret; never print it.
+node --input-type=module <<'NODE'
+import 'dotenv/config';
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 24) {
+  console.error('Invalid JWT_SECRET: set a random value of at least 24 characters in .env.');
+  process.exit(1);
+}
+NODE
+
+# Check ports before launching to avoid silently starting half the app.
+PORT_VALUE="$(node --input-type=module -e "import 'dotenv/config'; console.log(process.env.PORT || 3000)")"
+if command -v lsof >/dev/null 2>&1 && lsof -nP -iTCP:"$PORT_VALUE" -sTCP:LISTEN >/dev/null 2>&1; then
+  echo "API port $PORT_VALUE is already in use. Stop the other process or change PORT in .env." >&2
+  exit 1
+fi
+
+if [[ "$MODE" == "--background" ]]; then
+  if is_running; then
+    echo "Frame° is already running (PID $(cat "$PID_FILE"))."
+    echo "Frontend: http://127.0.0.1:5173/"
+    exit 0
+  fi
+  rm -f "$PID_FILE"
+  mkdir -p "$LOG_DIR"
+  touch "$LOG_FILE"
+  if command -v setsid >/dev/null 2>&1; then
+    setsid node scripts/dev.mjs >>"$LOG_FILE" 2>&1 < /dev/null &
+  else
+    nohup node scripts/dev.mjs >>"$LOG_FILE" 2>&1 < /dev/null &
+  fi
+  pid=$!
+  printf '%s\n' "$pid" > "$PID_FILE"
+  sleep 2
+  if ! kill -0 "$pid" 2>/dev/null; then
+    echo "Frame° failed to start. Recent log output:" >&2
+    tail -n 50 "$LOG_FILE" >&2 || true
+    rm -f "$PID_FILE"
+    exit 1
+  fi
+  echo "Frame° launched in the background. This shell is free to use."
+  echo "Frontend: http://127.0.0.1:5173/"
+  echo "API:      http://127.0.0.1:$PORT_VALUE/api/health"
+  echo "Logs:     ./start --logs"
+  echo "Stop:     ./start --stop"
+  exit 0
+fi
+
+echo "Starting Frame° in foreground... (Ctrl+C stops it)"
+exec node scripts/dev.mjs
