@@ -1,0 +1,90 @@
+
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+
+echo ""
+echo "  FRAME° — INITIALIZER"
+echo "  --------------------"
+
+# Check Node.js
+if ! command -v node >/dev/null 2>&1; then
+  echo "Node.js missing. Install it first:"
+  echo "pkg install nodejs-lts"
+  exit 1
+fi
+
+# Check npm
+if ! command -v npm >/dev/null 2>&1; then
+  echo "npm is missing."
+  exit 1
+fi
+
+# Require Node 20+
+node -e '
+if (Number(process.versions.node.split(".")[0]) < 20) {
+  console.error("Node.js 20 or newer is required.");
+  process.exit(1);
+}
+'
+
+if [[ ! -f package.json ]]; then
+  echo "ERROR: package.json not found."
+  exit 1
+fi
+
+# Create environment file
+if [[ ! -f .env ]]; then
+  echo "Creating environment configuration..."
+
+  SECRET=$(node -e \
+    'process.stdout.write(require("crypto").randomBytes(48).toString("hex"))')
+
+  cat > .env <<EOF
+PORT=3000
+JWT_SECRET=$SECRET
+NODE_ENV=development
+EOF
+fi
+
+# Ensure JWT secret is not the example value
+node --input-type=module <<'NODE'
+import fs from "node:fs";
+import crypto from "node:crypto";
+
+let env = fs.readFileSync(".env", "utf8");
+const match = env.match(/^JWT_SECRET\s*=\s*(.*)$/m);
+
+if (
+  !match ||
+  !match[1].trim() ||
+  match[1].trim() === "frame_dev_secret_change_this_before_deployment"
+) {
+  const secret = crypto.randomBytes(48).toString("hex");
+
+  if (match) {
+    env = env.replace(/^JWT_SECRET\s*=.*$/m, `JWT_SECRET=${secret}`);
+  } else {
+    env += `\nJWT_SECRET=${secret}\n`;
+  }
+
+  fs.writeFileSync(".env", env);
+  console.log("Generated JWT secret.");
+}
+NODE
+
+# Download/install all declared dependencies.
+echo ""
+echo "Checking and installing Frame° dependencies..."
+npm install --no-audit --no-fund
+
+echo ""
+echo "Starting Frame°..."
+echo "Frontend: http://localhost:5173/"
+echo "API:      http://localhost:3000/api/health"
+echo ""
+echo "Press Ctrl+C to stop."
+echo ""
+
+npm run dev

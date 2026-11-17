@@ -1,0 +1,579 @@
+FRAME° — COMPLETE FRONTEND MODERNIZATION, PREMIUM UI/UX & INTERACTION OVERHAUL
+
+Act as a world-class UI/UX designer, frontend architect, senior software engineer, motion designer, and design systems specialist.
+
+Your mission is to transform the existing Frame° frontend into a sophisticated, visually rich, fluid, and professionally engineered media platform.
+
+This is both a frontend modernization and UI/UX improvement project.
+
+You must inspect the existing application, evaluate alternative frontend technologies, choose the most suitable architecture, and actually implement the improvements.
+
+PRIMARY PRIORITY: Visual quality, interaction design, animations, and overall user experience.
+
+Performance matters, but do not sacrifice beautiful UI, creative flexibility, or interaction quality simply to achieve smaller bundle sizes or synthetic benchmark improvements.
+
+Preserve Frame°'s existing identity, branding, color palette, layout philosophy, and functionality.
+
+---
+
+1. FRONTEND TECHNOLOGY REEVALUATION & MIGRATION
+
+Before changing the interface, thoroughly inspect the existing frontend architecture.
+
+Evaluate whether the current framework and rendering architecture are appropriate for the application's long-term development.
+
+Do not automatically retain React or JSX simply because the project currently uses them.
+
+Preferred frontend stack
+
+Use the following as the primary candidate:
+
+- Svelte 5: Main frontend framework.
+- SvelteKit: Application architecture, routing, and server-side capabilities where needed.
+- TypeScript: Strict typing throughout the application.
+- Tailwind CSS: Styling and responsive layouts.
+- Bits UI or shadcn-svelte: Accessible, customizable UI primitives.
+- Motion or native CSS animations: Sophisticated interactions and transitions.
+- Lucide: Consistent outline iconography.
+
+Evaluate compatibility and maintenance before selecting individual libraries.
+
+Evaluate alternative technologies
+
+Compare the following:
+
+Frontend frameworks
+
+- Svelte 5.
+- Vue 3.
+- SolidJS.
+- Qwik.
+- Preact.
+- React.
+
+Styling technologies
+
+- Tailwind CSS.
+- Modern CSS.
+- CSS Modules.
+- CSS variables and design tokens.
+- SCSS where genuinely beneficial.
+
+Animation technologies
+
+- Native CSS transitions and keyframes.
+- Svelte transitions.
+- Motion.
+- GSAP for complex animation sequences when justified.
+
+Additional technologies
+
+Evaluate Web Components, lightweight state-management solutions, native browser APIs, and other technologies where they provide meaningful benefits.
+
+Migration requirements
+
+If Svelte 5 is selected:
+
+- Replace React components with native Svelte components.
+- Eliminate JSX and unnecessary React dependencies.
+- Migrate component state to Svelte 5 Runes.
+- Migrate hooks and lifecycle logic appropriately.
+- Reimplement routing using SvelteKit.
+- Migrate existing styles to Tailwind and reusable CSS.
+- Reimplement animations using appropriate Svelte and CSS capabilities.
+- Migrate all existing component functionality.
+- Preserve API integrations.
+- Preserve authentication and application state.
+- Maintain existing backend compatibility.
+
+Do not mechanically translate React syntax into Svelte syntax.
+
+Reconsider the architecture and implement each feature using the target framework's strengths.
+
+Important: Do not migrate the backend language simply because the frontend is changing. Keep the existing backend unless a separate, evidence-based architectural improvement is justified.
+
+---
+
+2. GLOBAL VISUAL POLISH
+
+Improve the entire interface.
+
+- Refine spacing, alignment, proportions, and visual hierarchy.
+- Make component borders, radii, shadows, and surfaces consistent.
+- Improve typography and readability.
+- Add subtle depth without excessive shadows.
+- Make interactive elements feel responsive.
+- Eliminate awkward spacing and visually disconnected components.
+- Ensure the interface feels cohesive across every page.
+
+Maintain Frame°'s existing branding and color theme.
+
+Do not introduce an unrelated theme or redesign the brand.
+
+The final interface should feel like a premium, professionally designed media platform.
+
+---
+
+3. GLASSMORPHISM & TRANSLUCENT UI
+
+Introduce a refined glassmorphism aesthetic throughout Frame°.
+
+This is a core visual requirement, not an optional decoration.
+
+Glass design characteristics
+
+- Semi-transparent dark surfaces.
+- Visible background blur using backdrop-filter.
+- Subtle translucent borders.
+- Soft ambient shadows.
+- Layered depth between floating elements.
+- Smooth transparency and blur transitions.
+- Carefully controlled opacity.
+- Natural separation between overlapping surfaces.
+
+Apply glass styling consistently to:
+
+- Floating bottom navigation.
+- Settings popovers.
+- Grid selector.
+- Dropdown menus.
+- Search overlays.
+- Modal dialogs.
+- Floating controls.
+- Context menus.
+
+Use different transparency levels depending on component hierarchy.
+
+Glass surfaces must genuinely reveal and blur the background rather than simply appearing as opaque dark boxes.
+
+Maintain readability at every opacity level.
+
+Avoid excessive blur, bright frosted-glass panels, distracting reflections, and unrelated color schemes.
+
+Provide graceful fallbacks when backdrop-filter is unsupported.
+
+---
+
+4. FLUID ANIMATIONS & TRANSITIONS
+
+Make the entire website feel alive and fluid.
+
+Implement tasteful animations for:
+
+- Page transitions.
+- Navigation interactions.
+- Dropdown menus.
+- Popovers.
+- Modal openings and closings.
+- Settings panels.
+- Video card hover states.
+- Buttons and clickable elements.
+- Search interactions.
+- Loading indicators.
+- Floating navigation.
+- Grid layout changes.
+
+Animation philosophy
+
+Animations should feel:
+
+- Smooth.
+- Natural.
+- Responsive.
+- Sophisticated.
+- Consistent.
+- Visually satisfying.
+- Subtle rather than distracting.
+
+Suggested timings:
+
+- Micro-interactions: 120–180ms.
+- Dropdowns and popovers: 160–220ms.
+- Panel transitions: 200–280ms.
+- Page transitions: 200–350ms.
+
+Use appropriate easing curves and spring-based motion where beneficial.
+
+Avoid excessive bouncing, unnecessary movement, and animations that delay user interaction.
+
+Use transforms and opacity wherever appropriate.
+
+Respect prefers-reduced-motion.
+
+Visual experience takes priority over minimizing every animation or transition.
+
+---
+
+5. REDESIGN ALL POPUPS AND POPOVERS
+
+The existing popup and dropdown experience should be significantly improved.
+
+Make popovers feel like integrated parts of the interface rather than ordinary browser-like menus.
+
+Requirements:
+
+- Refined dark glass surfaces.
+- Subtle borders.
+- Consistent rounded corners.
+- Soft ambient shadows.
+- Proper spacing.
+- Smooth entrance and exit animations.
+- Clear visual hierarchy.
+- Better icon alignment.
+- Consistent typography.
+- Proper positioning relative to triggers.
+
+Ensure popovers do not overflow the viewport.
+
+Add click-outside dismissal and Escape-key dismissal where appropriate.
+
+Use polished interaction states for every selectable item.
+
+Avoid oversized menus and unnecessary visual clutter.
+
+---
+
+6. REMOVE THE THREE-LINE MENU
+
+Remove the existing three-line hamburger menu from its current position.
+
+Do not simply hide it.
+
+Move its existing functionality and contents into a new floating bottom navigation bar.
+
+New floating bottom bar
+
+Create a sleek, floating navigation bar positioned near the bottom of the viewport.
+
+Design characteristics
+
+- Dark translucent glass surface.
+- Subtle backdrop blur.
+- Thin, understated border.
+- Rounded floating container.
+- Comfortable spacing.
+- Clean outline icons.
+- Smooth icon and selection transitions.
+- Proper safe-area spacing on mobile.
+- Responsive positioning on desktop and mobile.
+- Subtle lime active-state indicator.
+
+Move the existing hamburger menu contents into this floating bar.
+
+Preserve every existing menu action and functionality.
+
+Do not lose existing navigation options, tools, shortcuts, or features.
+
+Interaction behavior
+
+- Make the bar lightweight and unobtrusive.
+- Provide clear active-item indicators.
+- Add subtle hover and press animations.
+- Use smooth transitions when changing active sections.
+- Ensure it does not obstruct video content or important controls.
+
+The floating bar should feel like a carefully designed part of Frame°, not a generic mobile navigation component.
+
+---
+
+7. INTRODUCE A SETTINGS TAB
+
+Replace the old three-line menu trigger with a dedicated Settings tab.
+
+Use a recognizable settings/gear icon.
+
+Open a refined glassmorphism popover or panel.
+
+Keep settings straightforward rather than creating an unnecessarily complicated configuration dashboard.
+
+Basic settings
+
+Include appropriate existing settings, such as:
+
+- Appearance preferences.
+- Theme-related options while preserving Frame° identity.
+- Playback preferences.
+- Autoplay preferences.
+- Notification preferences, if supported.
+- Other relevant interface preferences.
+
+Only expose settings that actually work.
+
+Do not create fake switches or nonfunctional controls.
+
+---
+
+8. VIDEO GRID SELECTOR — MAJOR IMPROVEMENT
+
+Upgrade the existing video grid layout selector.
+
+Provide a dedicated grid control near the video browsing controls.
+
+Grid size options
+
+Allow users to select:
+
+- 2 videos per row.
+- 3 videos per row.
+- 4 videos per row.
+- 5 videos per row.
+- 6 videos per row, where screen space permits.
+
+Automatically adapt available options to screen width.
+
+Do not force desktop-sized grids onto mobile devices.
+
+Grid selector UI
+
+Create a polished glass popover containing:
+
+- A clear Grid Size heading.
+- Simple visual grid previews.
+- Number of videos per row.
+- Clearly highlighted active selection.
+- Smooth selection animations.
+
+Represent each option with a small visual grid preview rather than relying entirely on text.
+
+Grid behavior
+
+When a user changes grid size:
+
+- Update the video grid immediately.
+- Animate the transition smoothly.
+- Preserve the current scroll position.
+- Avoid unnecessary video reloads.
+- Avoid resetting filters.
+- Maintain consistent card proportions.
+- Ensure titles and metadata remain readable.
+
+Remember selected preferences across sessions using appropriate persistent storage.
+
+Responsive behavior
+
+Adapt intelligently to available width.
+
+A user selecting six columns on a narrow screen should not receive six tiny, unusable video cards.
+
+Use responsive constraints and sensible fallbacks.
+
+---
+
+9. VIDEO CARD INTERACTIONS
+
+Improve video card interactions.
+
+- Add subtle hover elevation.
+- Use smooth thumbnail transitions.
+- Refine hover overlays.
+- Improve duration badges.
+- Make title truncation consistent.
+- Keep video titles on one line, truncating overflow with an ellipsis.
+- Keep video duration positioned at the bottom-right of thumbnails.
+- Ensure metadata remains neatly aligned.
+- Improve spacing between cards.
+
+Maintain a consistent card appearance at every grid density.
+
+Avoid excessive animations on mobile.
+
+---
+
+10. FLOATING ELEMENTS & MICRO-INTERACTIONS
+
+Polish smaller interface details:
+
+- Search bar interactions.
+- Search suggestions.
+- Filter controls.
+- Grid selector.
+- Settings popover.
+- Active navigation indicators.
+- Loading skeletons.
+- Tooltips.
+- Scroll interactions.
+- Buttons and toggles.
+
+Create a consistent interaction language throughout Frame°.
+
+---
+
+11. DESIGN SYSTEM ARCHITECTURE
+
+Build a reusable visual design system rather than styling individual components independently.
+
+Establish centralized:
+
+- Color tokens.
+- Typography scales.
+- Spacing scales.
+- Border-radius values.
+- Shadow definitions.
+- Glass surface presets.
+- Blur levels.
+- Animation durations.
+- Easing curves.
+- Component interaction states.
+- Responsive breakpoints.
+
+Create reusable components for:
+
+- Glass panels.
+- Popovers.
+- Dropdowns.
+- Modals.
+- Navigation items.
+- Buttons.
+- Settings controls.
+- Grid selectors.
+- Video cards.
+- Loading skeletons.
+- Tooltips.
+
+Ensure visual consistency across all pages.
+
+The design system should make future visual improvements straightforward.
+
+---
+
+12. PERFORMANCE & TECHNICAL IMPLEMENTATION
+
+Performance matters, but visual quality is the higher frontend priority.
+
+Requirements:
+
+- Avoid unnecessary dependencies.
+- Avoid excessive JavaScript execution.
+- Prevent unnecessary component updates.
+- Optimize image and video loading.
+- Use efficient transitions.
+- Avoid expensive layout recalculations.
+- Keep animations responsive.
+- Implement lazy loading where appropriate.
+- Clean up event listeners.
+- Ensure settings and grid preferences persist correctly.
+- Maintain accessibility and keyboard navigation.
+
+Use the target framework's native capabilities.
+
+Do not introduce heavy animation libraries unless they genuinely improve the result.
+
+Do not sacrifice sophisticated visual effects merely to save negligible resources.
+
+---
+
+13. ACCESSIBILITY & RESPONSIVENESS
+
+Ensure the redesigned interface works properly across:
+
+- Desktop.
+- Tablets.
+- Mobile phones.
+- Touchscreens.
+- Different viewport sizes.
+
+Requirements:
+
+- Keyboard-accessible controls.
+- Visible focus indicators.
+- Appropriate ARIA attributes.
+- Correct semantic elements.
+- Proper color contrast.
+- Touch-friendly interaction targets.
+- Reduced-motion support.
+- Responsive glass surfaces.
+- Correct mobile safe-area handling.
+
+---
+
+14. STRICT DESIGN RULES
+
+- Preserve Frame° branding.
+- Preserve its existing color palette.
+- Maintain the dark industrial aesthetic.
+- Use glassmorphism consistently.
+- Use restrained lime accents.
+- Do not introduce an unrelated visual identity.
+- Do not add unnecessary UI elements.
+- Do not overcrowd the floating bar.
+- Do not create oversized popovers.
+- Do not use excessive gradients.
+- Do not make animations sluggish.
+- Do not sacrifice usability for aesthetics.
+- Do not remove existing functionality.
+- Do not leave nonfunctional settings.
+- Do not break responsive layouts.
+- Do not retain React unnecessarily if migrating to Svelte.
+- Do not mechanically translate components without improving their architecture.
+
+---
+
+15. FINAL TESTING
+
+After implementation:
+
+- Test the floating navigation on desktop and mobile.
+- Verify every migrated menu action.
+- Test all grid-size options.
+- Test responsive grid behavior.
+- Verify settings persistence.
+- Check popup positioning.
+- Test keyboard accessibility.
+- Check animation performance.
+- Verify that video cards do not reload unnecessarily.
+- Verify all existing frontend-backend integrations.
+- Test route navigation.
+- Test authentication if applicable.
+- Run TypeScript checks.
+- Run linting.
+- Run available tests.
+- Run the production build.
+- Fix all introduced errors.
+
+Do not claim functionality works unless it has actually been tested.
+
+---
+
+16. FINAL DELIVERY REPORT
+
+Provide:
+
+1. Original frontend architecture.
+2. Selected replacement framework and justification.
+3. Languages and technologies changed.
+4. Old dependencies removed.
+5. New dependencies introduced.
+6. Component architecture changes.
+7. Design system implementation.
+8. Glassmorphism implementation.
+9. Animation and interaction improvements.
+10. Floating navigation implementation.
+11. Settings and grid selector implementation.
+12. Responsive improvements.
+13. Performance measurements where available.
+14. Build and test results.
+15. Remaining issues or limitations.
+
+---
+
+FINAL OBJECTIVE
+
+Transform Frame° into a premium, modern, visually sophisticated media platform.
+
+The interface should feel fluid without being distracting, minimal without sacrificing functionality, and visually rich without becoming unnecessarily heavy.
+
+The floating bottom navigation must completely replace the old hamburger menu.
+
+The Settings tab must provide straightforward, functional configuration.
+
+The video grid selector must offer flexible per-row layouts with beautiful visual previews.
+
+Glassmorphism must be a consistent part of the visual language.
+
+Animations must make interactions feel satisfying and natural.
+
+The frontend framework must be selected based on the application's visual and architectural requirements, not framework popularity or synthetic performance benchmarks.
+
+Inspect deeply. Choose intelligently. Redesign thoughtfully. Implement completely. Test everything.
+
+Do not just describe these changes. Work directly on the existing project files and deliver the fully implemented frontend.
