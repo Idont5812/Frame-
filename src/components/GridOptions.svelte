@@ -21,7 +21,7 @@
       title="{n} videos per row"
       onclick={() => setPref("gridCols", n)}
     >
-      {#each Array(n) as _ (i)}
+      {#each Array.from({ length: n }, (_, index) => index) as _ (index)}
         <i></i>
       {/each}
     </button>
